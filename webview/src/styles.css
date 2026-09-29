@@ -1,0 +1,1124 @@
+/*
+ * Odin diagram webview styles.
+ * All colours derive from VS Code theme variables with fallbacks for the
+ * standalone harness. Keep every rule in this file: the webview CSP does not
+ * allow <style> tags.
+ */
+
+/* ---- tokens --------------------------------------------------------------- */
+/* Fallbacks for when no VS Code theme variables are present. */
+:root {
+  --odin-fb-bg: #1e1e1e;
+  --odin-fb-fg: #d4d4d4;
+  --odin-fb-muted: #9d9d9d;
+  --odin-fb-border: #3c3c3c;
+  --odin-fb-panel: #252526;
+  --odin-fb-accent: #3794ff;
+}
+
+/*
+ * Tokens are computed on <body> (not :root) so they see theme variables no
+ * matter whether the host defines them on <html> (VS Code) or <body>.
+ */
+body {
+  --odin-bg: var(--vscode-editor-background, var(--odin-fb-bg));
+  --odin-fg: var(--vscode-editor-foreground, var(--odin-fb-fg));
+  --odin-muted: var(--vscode-descriptionForeground, var(--odin-fb-muted));
+  --odin-border: var(--vscode-panel-border, var(--odin-fb-border));
+  --odin-panel-bg: var(--vscode-sideBar-background, var(--odin-fb-panel));
+  --odin-accent: var(--vscode-focusBorder, var(--odin-fb-accent));
+  --odin-link: var(--vscode-textLink-foreground, var(--odin-fb-accent));
+  --odin-font: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, "Helvetica Neue", Arial, sans-serif);
+  --odin-mono: var(--vscode-editor-font-family, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  --odin-font-size: var(--vscode-font-size, 13px);
+
+  --odin-added: var(--vscode-charts-green, #3fb950);
+  --odin-removed: var(--vscode-charts-red, #f85149);
+  --odin-modified: var(--vscode-charts-orange, #d29922);
+  --odin-blue: var(--vscode-charts-blue, #3794ff);
+  --odin-purple: var(--vscode-charts-purple, #b180d7);
+  --odin-yellow: var(--vscode-charts-yellow, #cca700);
+
+  /* Diagram */
+  --odin-cell-bg: color-mix(in srgb, var(--odin-bg) 88%, var(--odin-fg));
+  --odin-cell-border: color-mix(in srgb, var(--odin-fg) 45%, var(--odin-bg));
+  --odin-header-ip: color-mix(in srgb, var(--odin-blue) 26%, var(--odin-cell-bg));
+  --odin-header-module: color-mix(in srgb, var(--odin-purple) 28%, var(--odin-cell-bg));
+  --odin-header-hier: color-mix(in srgb, var(--odin-yellow) 24%, var(--odin-cell-bg));
+  --odin-header-unknown: color-mix(in srgb, var(--odin-fg) 12%, var(--odin-cell-bg));
+  --odin-wire: color-mix(in srgb, var(--odin-fg) 62%, var(--odin-bg));
+  --odin-wire-intf: color-mix(in srgb, var(--odin-blue) 70%, var(--odin-fg));
+  --odin-pin: color-mix(in srgb, var(--odin-fg) 70%, var(--odin-bg));
+  --odin-port-bg: color-mix(in srgb, var(--odin-fg) 10%, var(--odin-bg));
+  --odin-hl: var(--odin-accent);
+  --odin-grid: color-mix(in srgb, var(--odin-fg) 7%, transparent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --odin-fb-bg: #ffffff;
+    --odin-fb-fg: #1f1f1f;
+    --odin-fb-muted: #616161;
+    --odin-fb-border: #d4d4d4;
+    --odin-fb-panel: #f3f3f3;
+    --odin-fb-accent: #005fb8;
+  }
+}
+
+/* High contrast: rely on the theme's contrast border and drop tints. */
+body.vscode-high-contrast,
+body.vscode-high-contrast-light {
+  --odin-cell-border: var(--vscode-contrastBorder, var(--odin-fg));
+  --odin-border: var(--vscode-contrastBorder, var(--odin-fg));
+  --odin-wire: var(--odin-fg);
+  --odin-pin: var(--odin-fg);
+  --odin-header-ip: var(--odin-bg);
+  --odin-header-module: var(--odin-bg);
+  --odin-header-hier: var(--odin-bg);
+  --odin-header-unknown: var(--odin-bg);
+  --odin-cell-bg: var(--odin-bg);
+  --odin-hl: var(--vscode-contrastActiveBorder, var(--odin-accent));
+}
+
+/* ---- shell ------------------------------------------------------------------ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--odin-bg);
+  color: var(--odin-fg);
+  font-family: var(--odin-font);
+  font-size: var(--odin-font-size);
+}
+
+.odin-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.muted {
+  color: var(--odin-muted);
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 1px solid var(--odin-accent);
+  outline-offset: 1px;
+}
+
+/* ---- controls --------------------------------------------------------------- */
+.btn,
+.toggle,
+.icon-btn,
+.crumb {
+  font: inherit;
+  color: var(--vscode-button-secondaryForeground, var(--odin-fg));
+  background: var(--vscode-button-secondaryBackground, color-mix(in srgb, var(--odin-fg) 12%, var(--odin-bg)));
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 2px;
+  padding: 2px 8px;
+  line-height: 18px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:hover,
+.toggle:hover,
+.icon-btn:hover {
+  background: var(--vscode-button-secondaryHoverBackground, color-mix(in srgb, var(--odin-fg) 20%, var(--odin-bg)));
+}
+
+.btn.primary {
+  color: var(--vscode-button-foreground, #fff);
+  background: var(--vscode-button-background, #0e639c);
+}
+
+.btn.primary:hover {
+  background: var(--vscode-button-hoverBackground, #1177bb);
+}
+
+.btn.subtle {
+  background: transparent;
+  border-color: var(--odin-border);
+}
+
+.toggle[aria-pressed='true'] {
+  color: var(--vscode-button-foreground, #fff);
+  background: var(--vscode-button-background, #0e639c);
+}
+
+.icon-btn {
+  padding: 0 6px;
+  min-width: 24px;
+  background: transparent;
+}
+
+.input {
+  font: inherit;
+  color: var(--vscode-input-foreground, var(--odin-fg));
+  background: var(--vscode-input-background, color-mix(in srgb, var(--odin-fg) 6%, var(--odin-bg)));
+  border: 1px solid var(--vscode-input-border, var(--odin-border));
+  border-radius: 2px;
+  padding: 2px 6px;
+  line-height: 18px;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--vscode-input-placeholderForeground, var(--odin-muted));
+}
+
+.input:focus {
+  outline: 1px solid var(--odin-accent);
+  outline-offset: -1px;
+}
+
+button.link {
+  font: inherit;
+  color: var(--odin-link);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+button.link:hover {
+  text-decoration: underline;
+}
+
+/* ---- toolbar ---------------------------------------------------------------- */
+.toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--odin-border);
+  background: var(--vscode-editorWidget-background, var(--odin-panel-bg));
+  z-index: 5;
+}
+
+.tb-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 24px;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb li + li::before {
+  content: '›';
+  color: var(--odin-muted);
+  padding: 0 2px;
+}
+
+.crumb {
+  background: transparent;
+  border: none;
+  padding: 1px 4px;
+  color: var(--odin-link);
+}
+
+.crumb[aria-current] {
+  color: var(--odin-fg);
+  font-weight: 600;
+  cursor: default;
+}
+
+.crumb:hover:not([aria-current]) {
+  text-decoration: underline;
+  background: transparent;
+}
+
+.toggles {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.search {
+  position: relative;
+  width: min(340px, 45vw);
+}
+
+.search-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 0;
+  width: max(100%, 420px);
+  max-width: 90vw;
+  max-height: 60vh;
+  overflow: auto;
+  margin: 0;
+  padding: 2px 0;
+  list-style: none;
+  background: var(--vscode-editorSuggestWidget-background, var(--odin-panel-bg));
+  border: 1px solid var(--vscode-editorSuggestWidget-border, var(--odin-border));
+  box-shadow: 0 4px 12px var(--vscode-widget-shadow, rgba(0, 0, 0, 0.35));
+  z-index: 20;
+}
+
+.search-results li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.search-results li.active {
+  background: var(--vscode-list-activeSelectionBackground, color-mix(in srgb, var(--odin-accent) 35%, transparent));
+  color: var(--vscode-list-activeSelectionForeground, inherit);
+}
+
+.search-results li:hover:not(.active):not(.empty) {
+  background: var(--vscode-list-hoverBackground, color-mix(in srgb, var(--odin-fg) 8%, transparent));
+}
+
+.search-results .kind {
+  flex: 0 0 34px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  color: var(--odin-muted);
+}
+
+.search-results .sr-name {
+  font-weight: 600;
+}
+
+.search-results .sr-scope,
+.search-results .sr-detail {
+  color: var(--odin-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.legend {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 0 6px;
+  border-left: 1px solid var(--odin-border);
+  color: var(--odin-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.swatch.st-added,
+.dot.st-added {
+  background: var(--odin-added);
+}
+
+.swatch.st-removed,
+.dot.st-removed {
+  background: var(--odin-removed);
+}
+
+.swatch.st-modified,
+.dot.st-modified {
+  background: var(--odin-modified);
+}
+
+.diag-btn.has-warnings {
+  color: var(--vscode-editorWarning-foreground, var(--odin-modified));
+}
+
+.diag-btn.has-errors {
+  color: var(--vscode-editorError-foreground, var(--odin-removed));
+}
+
+/* ---- banner ----------------------------------------------------------------- */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--odin-border);
+}
+
+.banner.error {
+  background: var(--vscode-inputValidation-errorBackground, color-mix(in srgb, var(--odin-removed) 20%, var(--odin-bg)));
+  border-color: var(--vscode-inputValidation-errorBorder, var(--odin-removed));
+}
+
+.banner-text {
+  flex: 1;
+  white-space: pre-wrap;
+}
+
+/* ---- main area -------------------------------------------------------------- */
+.main {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+
+.canvas {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--odin-bg);
+  background-image: radial-gradient(var(--odin-grid) 1px, transparent 1px);
+  background-size: 16px 16px;
+  cursor: default;
+  touch-action: none;
+}
+
+.canvas.panning {
+  cursor: grabbing;
+}
+
+.empty-state,
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--odin-muted);
+  pointer-events: none;
+}
+
+.loading {
+  background: color-mix(in srgb, var(--odin-bg) 50%, transparent);
+}
+
+.zoom-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--vscode-editorWidget-background, var(--odin-panel-bg));
+  border: 1px solid var(--odin-border);
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.status {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  color: var(--odin-muted);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.panel-reopen {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 420px;
+  padding: 4px 8px;
+  pointer-events: none;
+  background: var(--vscode-editorHoverWidget-background, var(--odin-panel-bg));
+  color: var(--vscode-editorHoverWidget-foreground, var(--odin-fg));
+  border: 1px solid var(--vscode-editorHoverWidget-border, var(--odin-border));
+  box-shadow: 0 2px 8px var(--vscode-widget-shadow, rgba(0, 0, 0, 0.3));
+  font-size: 12px;
+  z-index: 10;
+}
+
+.tt-title {
+  font-weight: 600;
+  font-family: var(--odin-mono);
+}
+
+.tt-line {
+  color: var(--odin-muted);
+}
+
+/* ---- side panel ------------------------------------------------------------- */
+.side-panel {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-left: 1px solid var(--odin-border);
+  background: var(--odin-panel-bg);
+}
+
+.side-panel.collapsed {
+  display: none;
+}
+
+.panel-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--odin-border);
+}
+
+.tab {
+  font: inherit;
+  color: var(--odin-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.tab[aria-selected='true'] {
+  color: var(--odin-fg);
+  border-bottom-color: var(--odin-accent);
+}
+
+.panel-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 8px 10px 16px;
+}
+
+.prop-header {
+  margin-bottom: 8px;
+}
+
+.prop-kind {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--odin-muted);
+}
+
+.prop-title {
+  margin: 2px 0;
+  font-size: 1.15em;
+  word-break: break-all;
+}
+
+.prop-path {
+  font-family: var(--odin-mono);
+  font-size: 11px;
+  color: var(--odin-muted);
+  word-break: break-all;
+  margin-bottom: 4px;
+  user-select: text;
+}
+
+.prop-section h3,
+.diag-popover h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--odin-muted);
+  margin: 14px 0 4px;
+}
+
+table.kv {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+table.kv th,
+table.kv td {
+  text-align: left;
+  vertical-align: top;
+  padding: 2px 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--odin-border) 60%, transparent);
+  overflow-wrap: anywhere;
+  font-weight: normal;
+}
+
+table.kv th {
+  width: 42%;
+  color: var(--odin-muted);
+}
+
+table.props th,
+table.props td {
+  font-family: var(--odin-mono);
+  font-size: 11px;
+  word-break: break-all;
+}
+
+table.kv tr.changed {
+  background: color-mix(in srgb, var(--odin-modified) 14%, transparent);
+}
+
+.prop-change .before {
+  color: var(--odin-removed);
+  text-decoration: line-through;
+}
+
+.prop-change .after {
+  color: var(--odin-added);
+}
+
+ul.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.plain li {
+  padding: 1px 0;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--odin-bg);
+}
+
+.chip.st-added {
+  background: var(--odin-added);
+}
+
+.chip.st-removed {
+  background: var(--odin-removed);
+}
+
+.chip.st-modified {
+  background: var(--odin-modified);
+}
+
+.link.st-added {
+  color: var(--odin-added);
+}
+
+.link.st-removed {
+  color: var(--odin-removed);
+  text-decoration: line-through;
+}
+
+.link.st-modified {
+  color: var(--odin-modified);
+}
+
+.changes-filter {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.changes-filter input {
+  flex: 1;
+}
+
+.change-group summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+}
+
+.change-item {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 3px 4px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.change-item:hover:not(:disabled) {
+  background: var(--vscode-list-hoverBackground, color-mix(in srgb, var(--odin-fg) 8%, transparent));
+}
+
+.change-item:disabled {
+  cursor: default;
+}
+
+.dot {
+  flex: 0 0 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.change-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.change-label {
+  font-family: var(--odin-mono);
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.change-detail {
+  color: var(--odin-muted);
+  font-size: 11px;
+  word-break: break-all;
+}
+
+/* ---- popover ---------------------------------------------------------------- */
+.popover {
+  position: absolute;
+  right: 8px;
+  top: 64px;
+  width: min(460px, 90vw);
+  max-height: 50vh;
+  overflow: auto;
+  padding: 4px 10px 10px;
+  background: var(--vscode-editorWidget-background, var(--odin-panel-bg));
+  border: 1px solid var(--vscode-editorWidget-border, var(--odin-border));
+  box-shadow: 0 4px 12px var(--vscode-widget-shadow, rgba(0, 0, 0, 0.35));
+  z-index: 30;
+}
+
+.diag-item {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 3px 2px;
+}
+
+button.diag-item {
+  cursor: pointer;
+}
+
+button.diag-item:hover {
+  background: var(--vscode-list-hoverBackground, color-mix(in srgb, var(--odin-fg) 8%, transparent));
+}
+
+.diag-msg {
+  flex: 1;
+}
+
+.sev {
+  flex: 0 0 56px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.sev-error {
+  color: var(--vscode-editorError-foreground, var(--odin-removed));
+}
+
+.sev-warning {
+  color: var(--vscode-editorWarning-foreground, var(--odin-modified));
+}
+
+.sev-info {
+  color: var(--vscode-editorInfo-foreground, var(--odin-blue));
+}
+
+/* ---- diagram (SVG) ---------------------------------------------------------- */
+svg.odin-diagram {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  user-select: none;
+}
+
+svg.odin-diagram text {
+  fill: var(--odin-fg);
+  font-family: var(--odin-font);
+}
+
+.cell-body {
+  fill: var(--odin-cell-bg);
+}
+
+.cell-header {
+  fill: var(--odin-header-unknown);
+}
+
+.kind-ip .cell-header {
+  fill: var(--odin-header-ip);
+}
+
+.kind-module .cell-header {
+  fill: var(--odin-header-module);
+}
+
+.kind-hier .cell-header {
+  fill: var(--odin-header-hier);
+}
+
+.kind-hier .cell-body {
+  fill: color-mix(in srgb, var(--odin-header-hier) 35%, var(--odin-cell-bg));
+}
+
+.cell-sep {
+  stroke: var(--odin-cell-border);
+  stroke-width: 0.5;
+}
+
+.cell-outline {
+  fill: none;
+  stroke: var(--odin-cell-border);
+  stroke-width: 1.2;
+}
+
+.kind-hier .cell-outline {
+  stroke-dasharray: 6 3;
+  stroke-width: 1.5;
+}
+
+.cell-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cell-subtitle {
+  font-size: 10.5px;
+  fill: var(--odin-muted) !important;
+}
+
+.hier-glyph rect {
+  fill: none;
+  stroke: var(--odin-fg);
+  stroke-width: 1;
+}
+
+.hier-glyph path {
+  stroke: var(--odin-fg);
+  stroke-width: 1;
+}
+
+.cell.hover .cell-outline {
+  stroke: var(--odin-hl);
+}
+
+/* Separate ring so selection stays visible on top of diff colouring. */
+.select-ring {
+  fill: none;
+  stroke: none;
+  pointer-events: none;
+}
+
+.cell.selected .select-ring,
+.port.selected .select-ring {
+  stroke: var(--odin-hl);
+  stroke-width: 2;
+}
+
+.change-badge circle {
+  fill: var(--odin-modified);
+}
+
+svg.odin-diagram .change-badge text {
+  fill: var(--odin-bg);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* pins */
+.pin .hit {
+  fill: transparent;
+}
+
+.pin-stub {
+  stroke: var(--odin-pin);
+  stroke-width: 1.2;
+}
+
+.intf > .pin-stub,
+.pin.intf .pin-stub {
+  stroke-width: 3;
+}
+
+.pin-arrow {
+  fill: var(--odin-pin);
+}
+
+.pin-intf-box {
+  fill: var(--odin-cell-bg);
+  stroke: var(--odin-pin);
+  stroke-width: 1;
+}
+
+.pin-intf-plus {
+  stroke: var(--odin-fg);
+  stroke-width: 1.2;
+}
+
+.pin-label {
+  font-size: 11px;
+}
+
+.pin.intf .pin-label {
+  font-weight: 600;
+}
+
+svg.odin-diagram .pin-width {
+  fill: var(--odin-muted);
+  font-size: 10px;
+}
+
+.pin.hover .pin-label,
+.pin.hl .pin-label,
+.pin.selected .pin-label {
+  fill: var(--odin-hl);
+}
+
+.pin.hl .pin-stub,
+.pin.selected .pin-stub,
+.port.hl .pin-stub,
+.port.selected .pin-stub {
+  stroke: var(--odin-hl);
+}
+
+/* boundary ports (pentagons) */
+.port-shape {
+  fill: var(--odin-port-bg);
+  stroke: var(--odin-cell-border);
+  stroke-width: 1.2;
+}
+
+.port.intf .port-shape {
+  stroke-width: 2.5;
+}
+
+.port-label {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.port.hover .port-shape,
+.port.hl .port-shape {
+  stroke: var(--odin-hl);
+}
+
+/* nets */
+.wire {
+  fill: none;
+  stroke: var(--odin-wire);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.net.intf .wire {
+  stroke: var(--odin-wire-intf);
+  stroke-width: 3.2;
+}
+
+.wire-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 9;
+  pointer-events: stroke;
+}
+
+.junction {
+  fill: var(--odin-wire);
+}
+
+.net.intf .junction {
+  fill: var(--odin-wire-intf);
+}
+
+.net.hover .wire {
+  stroke: color-mix(in srgb, var(--odin-hl) 70%, var(--odin-wire));
+}
+
+.net.hl .wire,
+.net.hl .junction {
+  stroke: var(--odin-hl);
+  fill: none;
+}
+
+.net.hl .junction {
+  fill: var(--odin-hl);
+}
+
+.net.hl .wire {
+  stroke-width: 2.2;
+}
+
+.net.intf.hl .wire {
+  stroke-width: 4.2;
+}
+
+.net.hl-soft .wire {
+  stroke: color-mix(in srgb, var(--odin-hl) 55%, var(--odin-wire));
+}
+
+svg.has-selection .net:not(.hl):not(.hl-soft) {
+  opacity: 0.55;
+}
+
+/* Low zoom: drop small text for speed and legibility. */
+svg.zoomed-out .pin-label,
+svg.zoomed-out .cell-subtitle,
+svg.zoomed-out .pin-arrow,
+svg.zoomed-out .pin-intf-plus {
+  display: none;
+}
+
+/* ---- diff overlay ----------------------------------------------------------- */
+.cell.st-added .cell-outline,
+.port.st-added .port-shape {
+  stroke: var(--odin-added);
+  stroke-width: 2.5;
+}
+
+.cell.st-removed .cell-outline,
+.port.st-removed .port-shape {
+  stroke: var(--odin-removed);
+  stroke-width: 2;
+  stroke-dasharray: 5 3;
+}
+
+.cell.st-modified .cell-outline,
+.port.st-modified .port-shape {
+  stroke: var(--odin-modified);
+  stroke-width: 2.5;
+}
+
+.cell.st-added .cell-header {
+  fill: color-mix(in srgb, var(--odin-added) 30%, var(--odin-cell-bg));
+}
+
+.cell.st-removed .cell-header {
+  fill: color-mix(in srgb, var(--odin-removed) 22%, var(--odin-cell-bg));
+}
+
+.ghost {
+  opacity: 0.6;
+}
+
+.ghost .cell-body,
+.ghost .port-shape {
+  fill-opacity: 0.4;
+}
+
+.pin.st-added .pin-label {
+  fill: var(--odin-added);
+}
+
+.pin.st-added .pin-stub {
+  stroke: var(--odin-added);
+}
+
+.pin.st-removed .pin-label {
+  fill: var(--odin-removed);
+  text-decoration: line-through;
+}
+
+.pin.st-removed .pin-stub {
+  stroke: var(--odin-removed);
+  stroke-dasharray: 3 2;
+}
+
+.pin.st-modified .pin-label {
+  fill: var(--odin-modified);
+}
+
+.net.st-added .wire,
+.wire.est-added {
+  stroke: var(--odin-added);
+}
+
+.net.st-removed .wire,
+.wire.est-removed {
+  stroke: var(--odin-removed);
+  stroke-dasharray: 6 4;
+}
+
+.net.st-modified .wire {
+  stroke: var(--odin-modified);
+}
+
+.net.st-added .junction {
+  fill: var(--odin-added);
+}
+
+.net.st-removed .junction {
+  fill: var(--odin-removed);
+}
+
+.net.st-modified .junction {
+  fill: var(--odin-modified);
+}
+
+svg.diff-only .unchanged {
+  opacity: 0.18;
+}
+
+svg.diff-only .cell.unchanged .pin {
+  opacity: 1;
+}

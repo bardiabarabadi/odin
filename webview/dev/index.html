@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Mirrors the extension's webview CSP: no inline styles, nonce'd scripts, no eval. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'self'; script-src 'nonce-odin-dev'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';" />
+  <title>Odin webview harness</title>
+  <link rel="stylesheet" href="../../dist/webview.css" />
+  <link rel="stylesheet" href="harness.css" />
+</head>
+<body class="vscode-dark">
+  <div id="odin-app"></div>
+  <div id="harness" aria-label="Dev harness">
+    <strong>harness:</strong>
+    <button data-act="diff">Load diff</button>
+    <button data-act="clear">Clear diff</button>
+    <button data-act="reload">Re-send design</button>
+    <button data-act="error">Parse error</button>
+    <button data-act="focus">Focus uart</button>
+    <button data-act="export">Request export</button>
+    <button data-act="theme">Theme</button>
+  </div>
+  <div id="harness-log"></div>
+  <script nonce="odin-dev">
+    (function () {
+      window.__cspViolations = [];
+      document.addEventListener('securitypolicyviolation', (e) => {
+        window.__cspViolations.push(e.violatedDirective + ' ' + e.blockedURI);
+        console.warn('[harness] CSP violation', e.violatedDirective, e.blockedURI);
+      });
+      const params = new URLSearchParams(location.search);
+      const themes = ['vscode-dark', 'vscode-light', 'vscode-high-contrast'];
+      const pick = { dark: 0, light: 1, hc: 2 }[params.get('theme') || 'dark'] || 0;
+      document.body.className = themes[pick];
+      const log = (text) => {
+        const el = document.getElementById('harness-log');
+        el.textContent = text;
+        console.log('[harness]', text);
+      };
+      const send = (msg) => window.postMessage(msg, '*');
+      const designUrl = params.get('design') || 'sample-design.json';
+      let design;
+      async function sendDesign() {
+        design = design || (await (await fetch(designUrl)).json());
+        send({ type: 'design', payload: { design, label: designUrl.split('/').pop(), parsedAt: Date.now() } });
+      }
+      async function sendDiff() {
+        const d = params.get('diff');
+        const payload = await (await fetch(d && d !== '1' ? d : 'sample-diff.json')).json();
+        send({ type: 'diff', payload });
+      }
+      let state;
+      try { state = JSON.parse(sessionStorage.getItem('odin-harness-state') || 'null'); } catch (e) { state = null; }
+      window.acquireVsCodeApi = function () {
+        return {
+          postMessage(msg) {
+            switch (msg.type) {
+              case 'ready':
+                log('ready');
+                sendDesign().then(() => { if (params.get('diff')) sendDiff(); });
+                break;
+              case 'requestCompare':
+                log('requestCompare -> loading sample diff');
+                sendDiff();
+                break;
+              case 'revealSource':
+                log('revealSource ' + msg.loc.file + ':' + msg.loc.line);
+                break;
+              case 'exportSvg': {
+                log('exportSvg ' + msg.suggestedName + ' (' + msg.svg.length + ' bytes)');
+                window.__lastExport = msg.svg;
+                if (!params.get('nodownload')) {
+                  const a = document.createElement('a');
+                  a.href = URL.createObjectURL(new Blob([msg.svg], { type: 'image/svg+xml' }));
+                  a.download = msg.suggestedName;
+                  a.click();
+                }
+                break;
+              }
+              default:
+                log(msg.type + ' ' + JSON.stringify(msg.state || msg.message || ''));
+            }
+          },
+          getState() { return state; },
+          setState(s) { state = s; try { sessionStorage.setItem('odin-harness-state', JSON.stringify(s)); } catch (e) {} },
+        };
+      };
+      document.getElementById('harness').addEventListener('click', (ev) => {
+        const act = ev.target && ev.target.getAttribute && ev.target.getAttribute('data-act');
+        if (act === 'diff') sendDiff();
+        if (act === 'clear') send({ type: 'clearDiff' });
+        if (act === 'reload') sendDesign();
+        if (act === 'error') send({ type: 'parseError', message: 'sample_bd.tcl:123: unexpected token "}"' });
+        if (act === 'focus') send({ type: 'focus', path: 'io_subsystem/axi_uart_0' });
+        if (act === 'export') send({ type: 'requestExportSvg' });
+        if (act === 'theme') {
+          const i = (themes.indexOf(document.body.className) + 1) % themes.length;
+          document.body.className = themes[i];
+        }
+      });
+    })();
+  </script>
+  <script nonce="odin-dev" src="../../dist/webview.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+{
+  "name": "odin",
+  "displayName": "Odin – FPGA Block Design Visualizer",
+  "description": "Visualize FPGA block designs from Vivado TCL exports (and, over time, other HDL sources) inside VS Code, and compare them against any git revision.",
+  "version": "0.1.0",
+  "publisher": "bardiabarabadi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bardiabarabadi/odin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bardiabarabadi/odin/issues"
+  },
+  "homepage": "https://github.com/bardiabarabadi/odin#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "fpga",
+    "vivado",
+    "block design",
+    "tcl",
+    "hdl",
+    "xilinx",
+    "amd",
+    "schematic"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:tcl",
+    "onCustomEditor:odin.blockDesign"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tcl",
+        "aliases": [
+          "Tcl",
+          "tcl"
+        ],
+        "extensions": [
+          ".tcl",
+          ".xdc"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "odin.visualize",
+        "title": "Visualize Block Design",
+        "category": "Odin",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "odin.compare",
+        "title": "Compare Block Design With Git Revision…",
+        "category": "Odin",
+        "icon": "$(git-compare)"
+      },
+      {
+        "command": "odin.clearCompare",
+        "title": "Clear Comparison",
+        "category": "Odin",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "odin.exportSvg",
+        "title": "Export Diagram as SVG",
+        "category": "Odin",
+        "icon": "$(export)"
+      },
+      {
+        "command": "odin.refresh",
+        "title": "Refresh Diagram",
+        "category": "Odin",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "odin.openSource",
+        "title": "Open Source File",
+        "category": "Odin",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "odin.showLog",
+        "title": "Show Log",
+        "category": "Odin"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "odin.visualize",
+          "when": "resourceExtname == .tcl && odin.isBlockDesign && !activeCustomEditorId",
+          "group": "navigation"
+        },
+        {
+          "command": "odin.compare",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)",
+          "group": "navigation@1"
+        },
+        {
+          "command": "odin.clearCompare",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused) && odin.hasComparison",
+          "group": "navigation@2"
+        },
+        {
+          "command": "odin.refresh",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)",
+          "group": "navigation@3"
+        },
+        {
+          "command": "odin.exportSvg",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)",
+          "group": "navigation@4"
+        },
+        {
+          "command": "odin.openSource",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)",
+          "group": "navigation@5"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "odin.visualize",
+          "when": "resourceExtname == .tcl && odin.isBlockDesign",
+          "group": "odin@1"
+        },
+        {
+          "command": "odin.compare",
+          "when": "resourceExtname == .tcl && odin.isBlockDesign",
+          "group": "odin@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "odin.visualize",
+          "when": "resourceExtname == .tcl",
+          "group": "navigation@90"
+        },
+        {
+          "command": "odin.compare",
+          "when": "resourceExtname == .tcl",
+          "group": "navigation@91"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "odin.visualize",
+          "when": "odin.isBlockDesign || (activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)"
+        },
+        {
+          "command": "odin.compare",
+          "when": "odin.isBlockDesign || (activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)"
+        },
+        {
+          "command": "odin.clearCompare",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused) && odin.hasComparison"
+        },
+        {
+          "command": "odin.exportSvg",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)"
+        },
+        {
+          "command": "odin.refresh",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)"
+        },
+        {
+          "command": "odin.openSource",
+          "when": "(activeWebviewPanelId == 'odin.blockDesignPanel' || activeCustomEditorId == 'odin.blockDesign' || odin.panelFocused)"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "odin.blockDesign",
+        "displayName": "Odin Block Design",
+        "selector": [
+          {
+            "filenamePattern": "*.tcl"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "odin.visualize",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "editorTextFocus && editorLangId == tcl"
+      }
+    ],
+    "configuration": {
+      "title": "Odin",
+      "properties": {
+        "odin.autoRefreshOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-parse and redraw the diagram (and recompute an active comparison) whenever the source file is saved."
+        },
+        "odin.hideClockResetNetsByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Hide clock and reset nets when a diagram is opened for the first time."
+        },
+        "odin.hideUnconnectedPinsByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Hide unconnected pins when a diagram is opened for the first time."
+        },
+        "odin.compare.defaultRef": {
+          "type": "string",
+          "default": "HEAD",
+          "description": "Git revision offered first when comparing a block design."
+        },
+        "odin.git.path": {
+          "type": "string",
+          "default": "git",
+          "scope": "machine",
+          "description": "Path to the git executable used for comparisons."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p webview/tsconfig.json",
+    "lint": "eslint src webview/src --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "package": "npm run build:prod && vsce package --no-dependencies",
+    "vscode:prepublish": "npm run build:prod",
+    "parse": "tsx scripts/parse.ts",
+    "dev:webview": "node esbuild.mjs && node webview/dev/serve.mjs",
+    "build:prod": "node esbuild.mjs --production"
+  },
+  "dependencies": {
+    "elkjs": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "@types/vscode": "1.90",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^8.57.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,94 @@
+/* Dev harness only: stand-ins for the theme variables VS Code injects. */
+body.vscode-dark {
+  --vscode-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, sans-serif;
+  --vscode-font-size: 13px;
+  --vscode-editor-font-family: Menlo, Consolas, monospace;
+  --vscode-editor-background: #1f1f1f;
+  --vscode-editor-foreground: #cccccc;
+  --vscode-descriptionForeground: #9d9d9d;
+  --vscode-panel-border: #2b2b2b;
+  --vscode-sideBar-background: #181818;
+  --vscode-editorWidget-background: #202020;
+  --vscode-focusBorder: #0078d4;
+  --vscode-textLink-foreground: #4daafc;
+  --vscode-button-background: #0078d4;
+  --vscode-button-foreground: #ffffff;
+  --vscode-button-hoverBackground: #026ec1;
+  --vscode-button-secondaryBackground: #313131;
+  --vscode-button-secondaryForeground: #cccccc;
+  --vscode-button-secondaryHoverBackground: #3c3c3c;
+  --vscode-input-background: #313131;
+  --vscode-input-foreground: #cccccc;
+  --vscode-input-border: #3c3c3c;
+  --vscode-charts-green: #89d185;
+  --vscode-charts-red: #f14c4c;
+  --vscode-charts-orange: #d18616;
+  --vscode-charts-blue: #3794ff;
+  --vscode-charts-purple: #b180d7;
+  --vscode-charts-yellow: #cca700;
+}
+body.vscode-light {
+  --vscode-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, sans-serif;
+  --vscode-font-size: 13px;
+  --vscode-editor-font-family: Menlo, Consolas, monospace;
+  --vscode-editor-background: #ffffff;
+  --vscode-editor-foreground: #3b3b3b;
+  --vscode-descriptionForeground: #717171;
+  --vscode-panel-border: #e5e5e5;
+  --vscode-sideBar-background: #f8f8f8;
+  --vscode-editorWidget-background: #f8f8f8;
+  --vscode-focusBorder: #005fb8;
+  --vscode-textLink-foreground: #005fb8;
+  --vscode-button-background: #005fb8;
+  --vscode-button-foreground: #ffffff;
+  --vscode-button-hoverBackground: #0258a8;
+  --vscode-button-secondaryBackground: #e5e5e5;
+  --vscode-button-secondaryForeground: #3b3b3b;
+  --vscode-button-secondaryHoverBackground: #cccccc;
+  --vscode-input-background: #ffffff;
+  --vscode-input-foreground: #3b3b3b;
+  --vscode-input-border: #cecece;
+  --vscode-charts-green: #388a34;
+  --vscode-charts-red: #e51400;
+  --vscode-charts-orange: #d18616;
+  --vscode-charts-blue: #1a85ff;
+  --vscode-charts-purple: #652d90;
+  --vscode-charts-yellow: #bf8803;
+}
+body.vscode-high-contrast {
+  --vscode-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, sans-serif;
+  --vscode-editor-background: #000000;
+  --vscode-editor-foreground: #ffffff;
+  --vscode-contrastBorder: #6fc3df;
+  --vscode-contrastActiveBorder: #f38518;
+  --vscode-focusBorder: #f38518;
+  --vscode-charts-green: #89d185;
+  --vscode-charts-red: #f48771;
+  --vscode-charts-orange: #d18616;
+  --vscode-charts-blue: #3794ff;
+}
+#harness {
+  position: fixed;
+  left: 10px;
+  bottom: 30px;
+  z-index: 100;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 4px;
+  font: 11px sans-serif;
+  background: rgba(128, 128, 128, 0.18);
+  border: 1px dashed rgba(128, 128, 128, 0.6);
+  border-radius: 4px;
+}
+#harness button { font: inherit; }
+#harness-log {
+  position: fixed;
+  left: 10px;
+  bottom: 62px;
+  z-index: 100;
+  max-width: 50vw;
+  font: 11px monospace;
+  color: #888;
+  pointer-events: none;
+}

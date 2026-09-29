@@ -1,0 +1,17 @@
+**/*.map
+.eslintrc.cjs
+.github/**
+.gitignore
+.vscode/**
+AGENTS.md
+CONTRIBUTING.md
+docs/**
+esbuild.mjs
+node_modules/**
+out/**
+scripts/**
+src/**
+test/**
+tsconfig.json
+vitest.config.ts
+webview/**

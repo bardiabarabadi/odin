@@ -1,0 +1,1314 @@
+{
+  "name": "demo_bd",
+  "sourceFormat": "vivado-bd-tcl",
+  "sourceFile": "sample_bd.tcl",
+  "tool": {
+    "name": "Vivado",
+    "version": "2023.2",
+    "part": "xc7a35ticsg324-1L"
+  },
+  "ports": [
+    {
+      "name": "sys_clk",
+      "path": "sys_clk",
+      "dir": "I",
+      "type": "clk",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 10
+      }
+    },
+    {
+      "name": "reset_n",
+      "path": "reset_n",
+      "dir": "I",
+      "type": "rst",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 11
+      }
+    },
+    {
+      "name": "uart_rx",
+      "path": "uart_rx",
+      "dir": "I",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 12
+      }
+    },
+    {
+      "name": "uart_tx",
+      "path": "uart_tx",
+      "dir": "O",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 13
+      }
+    },
+    {
+      "name": "leds",
+      "path": "leds",
+      "dir": "O",
+      "from": 7,
+      "to": 0,
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 14
+      }
+    },
+    {
+      "name": "pwm_out",
+      "path": "pwm_out",
+      "dir": "O",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 15
+      }
+    },
+    {
+      "name": "spare_io",
+      "path": "spare_io",
+      "dir": "IO",
+      "from": 3,
+      "to": 0,
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 16
+      }
+    }
+  ],
+  "intfPorts": [
+    {
+      "name": "gpio_rtl",
+      "path": "gpio_rtl",
+      "mode": "Master",
+      "vlnv": "xilinx.com:interface:gpio_rtl:1.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 17
+      }
+    }
+  ],
+  "cells": [
+    {
+      "name": "microblaze_0",
+      "path": "microblaze_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.C_DEBUG_ENABLED": "1",
+        "CONFIG.C_D_AXI": "1",
+        "CONFIG.C_USE_BARREL": "1"
+      },
+      "pins": [
+        {
+          "name": "Clk",
+          "path": "microblaze_0/Clk",
+          "inferred": true
+        },
+        {
+          "name": "Reset",
+          "path": "microblaze_0/Reset",
+          "inferred": true
+        },
+        {
+          "name": "Interrupt",
+          "path": "microblaze_0/Interrupt",
+          "inferred": true
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "M_AXI_DP",
+          "path": "microblaze_0/M_AXI_DP",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        },
+        {
+          "name": "DLMB",
+          "path": "microblaze_0/DLMB",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:lmb_rtl:1.0",
+          "inferred": true
+        },
+        {
+          "name": "ILMB",
+          "path": "microblaze_0/ILMB",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:lmb_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:microblaze:11.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 18
+      }
+    },
+    {
+      "name": "axi_interconnect_0",
+      "path": "axi_interconnect_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.NUM_MI": "2",
+        "CONFIG.NUM_SI": "1"
+      },
+      "pins": [
+        {
+          "name": "ACLK",
+          "path": "axi_interconnect_0/ACLK",
+          "inferred": true
+        },
+        {
+          "name": "ARESETN",
+          "path": "axi_interconnect_0/ARESETN",
+          "inferred": true
+        },
+        {
+          "name": "S00_ACLK",
+          "path": "axi_interconnect_0/S00_ACLK",
+          "inferred": true
+        },
+        {
+          "name": "S00_ARESETN",
+          "path": "axi_interconnect_0/S00_ARESETN",
+          "inferred": true
+        },
+        {
+          "name": "M00_ACLK",
+          "path": "axi_interconnect_0/M00_ACLK",
+          "inferred": true
+        },
+        {
+          "name": "M00_ARESETN",
+          "path": "axi_interconnect_0/M00_ARESETN",
+          "inferred": true
+        },
+        {
+          "name": "M01_ACLK",
+          "path": "axi_interconnect_0/M01_ACLK",
+          "inferred": true
+        },
+        {
+          "name": "M01_ARESETN",
+          "path": "axi_interconnect_0/M01_ARESETN",
+          "inferred": true
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "S00_AXI",
+          "path": "axi_interconnect_0/S00_AXI",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        },
+        {
+          "name": "M00_AXI",
+          "path": "axi_interconnect_0/M00_AXI",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        },
+        {
+          "name": "M01_AXI",
+          "path": "axi_interconnect_0/M01_AXI",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:axi_interconnect:2.1",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 19
+      }
+    },
+    {
+      "name": "axi_gpio_0",
+      "path": "axi_gpio_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.C_GPIO_WIDTH": "8",
+        "CONFIG.C_IS_DUAL": "1",
+        "CONFIG.C_ALL_OUTPUTS_2": "1"
+      },
+      "pins": [
+        {
+          "name": "s_axi_aclk",
+          "path": "axi_gpio_0/s_axi_aclk",
+          "inferred": true
+        },
+        {
+          "name": "s_axi_aresetn",
+          "path": "axi_gpio_0/s_axi_aresetn",
+          "inferred": true
+        },
+        {
+          "name": "gpio2_io_o",
+          "path": "axi_gpio_0/gpio2_io_o",
+          "inferred": true,
+          "from": 7,
+          "to": 0
+        },
+        {
+          "name": "ip2intc_irpt",
+          "path": "axi_gpio_0/ip2intc_irpt",
+          "inferred": true
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "S_AXI",
+          "path": "axi_gpio_0/S_AXI",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        },
+        {
+          "name": "GPIO",
+          "path": "axi_gpio_0/GPIO",
+          "mode": "Master",
+          "vlnv": "xilinx.com:interface:gpio_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:axi_gpio:2.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 20
+      }
+    },
+    {
+      "name": "clk_wiz_0",
+      "path": "clk_wiz_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.CLKOUT1_REQUESTED_OUT_FREQ": "100.000",
+        "CONFIG.RESET_TYPE": "ACTIVE_LOW",
+        "CONFIG.PRIM_IN_FREQ": "125.000"
+      },
+      "pins": [
+        {
+          "name": "clk_in1",
+          "path": "clk_wiz_0/clk_in1",
+          "inferred": true
+        },
+        {
+          "name": "resetn",
+          "path": "clk_wiz_0/resetn",
+          "inferred": true
+        },
+        {
+          "name": "clk_out1",
+          "path": "clk_wiz_0/clk_out1",
+          "inferred": true
+        },
+        {
+          "name": "locked",
+          "path": "clk_wiz_0/locked",
+          "inferred": true
+        }
+      ],
+      "intfPins": [],
+      "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 21
+      }
+    },
+    {
+      "name": "proc_sys_reset_0",
+      "path": "proc_sys_reset_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.C_EXT_RESET_HIGH": "0"
+      },
+      "pins": [
+        {
+          "name": "slowest_sync_clk",
+          "path": "proc_sys_reset_0/slowest_sync_clk",
+          "inferred": true
+        },
+        {
+          "name": "ext_reset_in",
+          "path": "proc_sys_reset_0/ext_reset_in",
+          "inferred": true
+        },
+        {
+          "name": "dcm_locked",
+          "path": "proc_sys_reset_0/dcm_locked",
+          "inferred": true
+        },
+        {
+          "name": "mb_debug_sys_rst",
+          "path": "proc_sys_reset_0/mb_debug_sys_rst",
+          "inferred": true
+        },
+        {
+          "name": "mb_reset",
+          "path": "proc_sys_reset_0/mb_reset",
+          "inferred": true
+        },
+        {
+          "name": "interconnect_aresetn",
+          "path": "proc_sys_reset_0/interconnect_aresetn",
+          "inferred": true
+        },
+        {
+          "name": "peripheral_aresetn",
+          "path": "proc_sys_reset_0/peripheral_aresetn",
+          "inferred": true
+        }
+      ],
+      "intfPins": [],
+      "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 22
+      }
+    },
+    {
+      "name": "lmb_bram_0",
+      "path": "lmb_bram_0",
+      "parent": "",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.Memory_Type": "True_Dual_Port_RAM"
+      },
+      "pins": [],
+      "intfPins": [
+        {
+          "name": "BRAM_PORTA",
+          "path": "lmb_bram_0/BRAM_PORTA",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:bram_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:blk_mem_gen:8.4",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 23
+      }
+    },
+    {
+      "name": "pwm_gen_0",
+      "path": "pwm_gen_0",
+      "parent": "",
+      "kind": "module",
+      "properties": {},
+      "pins": [
+        {
+          "name": "clk",
+          "path": "pwm_gen_0/clk",
+          "dir": "I",
+          "type": "clk",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 24
+          }
+        },
+        {
+          "name": "rst_n",
+          "path": "pwm_gen_0/rst_n",
+          "dir": "I",
+          "type": "rst",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 25
+          }
+        },
+        {
+          "name": "duty",
+          "path": "pwm_gen_0/duty",
+          "dir": "I",
+          "from": 7,
+          "to": 0,
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 26
+          }
+        },
+        {
+          "name": "pwm",
+          "path": "pwm_gen_0/pwm",
+          "dir": "O",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 27
+          }
+        },
+        {
+          "name": "debug",
+          "path": "pwm_gen_0/debug",
+          "dir": "O",
+          "from": 3,
+          "to": 0,
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 28
+          }
+        }
+      ],
+      "intfPins": [],
+      "reference": "pwm_gen",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 29
+      }
+    },
+    {
+      "name": "io_subsystem",
+      "path": "io_subsystem",
+      "parent": "",
+      "kind": "hier",
+      "properties": {},
+      "pins": [
+        {
+          "name": "clk",
+          "path": "io_subsystem/clk",
+          "dir": "I",
+          "type": "clk",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 30
+          }
+        },
+        {
+          "name": "aresetn",
+          "path": "io_subsystem/aresetn",
+          "dir": "I",
+          "type": "rst",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 31
+          }
+        },
+        {
+          "name": "rx",
+          "path": "io_subsystem/rx",
+          "dir": "I",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 32
+          }
+        },
+        {
+          "name": "tx",
+          "path": "io_subsystem/tx",
+          "dir": "O",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 33
+          }
+        },
+        {
+          "name": "leds",
+          "path": "io_subsystem/leds",
+          "dir": "O",
+          "from": 7,
+          "to": 0,
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 34
+          }
+        },
+        {
+          "name": "interrupt",
+          "path": "io_subsystem/interrupt",
+          "dir": "O",
+          "type": "intr",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 35
+          }
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "S_AXI",
+          "path": "io_subsystem/S_AXI",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 36
+          }
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 37
+      }
+    },
+    {
+      "name": "axi_uart_0",
+      "path": "io_subsystem/axi_uart_0",
+      "parent": "io_subsystem",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.C_BAUDRATE": "115200"
+      },
+      "pins": [
+        {
+          "name": "s_axi_aclk",
+          "path": "io_subsystem/axi_uart_0/s_axi_aclk",
+          "inferred": true
+        },
+        {
+          "name": "s_axi_aresetn",
+          "path": "io_subsystem/axi_uart_0/s_axi_aresetn",
+          "inferred": true
+        },
+        {
+          "name": "rx",
+          "path": "io_subsystem/axi_uart_0/rx",
+          "inferred": true
+        },
+        {
+          "name": "tx",
+          "path": "io_subsystem/axi_uart_0/tx",
+          "inferred": true
+        },
+        {
+          "name": "interrupt",
+          "path": "io_subsystem/axi_uart_0/interrupt",
+          "inferred": true
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "S_AXI",
+          "path": "io_subsystem/axi_uart_0/S_AXI",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:axi_uartlite:2.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 38
+      }
+    },
+    {
+      "name": "axi_timer_0",
+      "path": "io_subsystem/axi_timer_0",
+      "parent": "io_subsystem",
+      "kind": "ip",
+      "properties": {
+        "CONFIG.enable_timer2": "0"
+      },
+      "pins": [
+        {
+          "name": "s_axi_aclk",
+          "path": "io_subsystem/axi_timer_0/s_axi_aclk",
+          "inferred": true
+        },
+        {
+          "name": "s_axi_aresetn",
+          "path": "io_subsystem/axi_timer_0/s_axi_aresetn",
+          "inferred": true
+        },
+        {
+          "name": "generateout0",
+          "path": "io_subsystem/axi_timer_0/generateout0",
+          "inferred": true
+        },
+        {
+          "name": "capturetrig0",
+          "path": "io_subsystem/axi_timer_0/capturetrig0",
+          "inferred": true
+        }
+      ],
+      "intfPins": [
+        {
+          "name": "S_AXI",
+          "path": "io_subsystem/axi_timer_0/S_AXI",
+          "mode": "Slave",
+          "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+          "inferred": true
+        }
+      ],
+      "vlnv": "xilinx.com:ip:axi_timer:2.0",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 39
+      }
+    },
+    {
+      "name": "led_ctrl_0",
+      "path": "io_subsystem/led_ctrl_0",
+      "parent": "io_subsystem",
+      "kind": "module",
+      "properties": {},
+      "pins": [
+        {
+          "name": "clk",
+          "path": "io_subsystem/led_ctrl_0/clk",
+          "dir": "I",
+          "type": "clk",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 40
+          }
+        },
+        {
+          "name": "rst_n",
+          "path": "io_subsystem/led_ctrl_0/rst_n",
+          "dir": "I",
+          "type": "rst",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 41
+          }
+        },
+        {
+          "name": "tick",
+          "path": "io_subsystem/led_ctrl_0/tick",
+          "dir": "I",
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 42
+          }
+        },
+        {
+          "name": "leds",
+          "path": "io_subsystem/led_ctrl_0/leds",
+          "dir": "O",
+          "from": 7,
+          "to": 0,
+          "loc": {
+            "file": "sample_bd.tcl",
+            "line": 43
+          }
+        }
+      ],
+      "intfPins": [],
+      "reference": "led_ctrl",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 44
+      }
+    }
+  ],
+  "nets": [
+    {
+      "name": "microblaze_0_M_AXI_DP",
+      "scope": "",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "microblaze_0/M_AXI_DP",
+          "kind": "intfPin"
+        },
+        {
+          "path": "axi_interconnect_0/S00_AXI",
+          "kind": "intfPin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 45
+      }
+    },
+    {
+      "name": "axi_interconnect_0_M00_AXI",
+      "scope": "",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "axi_interconnect_0/M00_AXI",
+          "kind": "intfPin"
+        },
+        {
+          "path": "axi_gpio_0/S_AXI",
+          "kind": "intfPin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 46
+      }
+    },
+    {
+      "name": "axi_interconnect_0_M01_AXI",
+      "scope": "",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "axi_interconnect_0/M01_AXI",
+          "kind": "intfPin"
+        },
+        {
+          "path": "io_subsystem/S_AXI",
+          "kind": "intfPin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 47
+      }
+    },
+    {
+      "name": "microblaze_0_DLMB",
+      "scope": "",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "microblaze_0/DLMB",
+          "kind": "intfPin"
+        },
+        {
+          "path": "lmb_bram_0/BRAM_PORTA",
+          "kind": "intfPin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 48
+      }
+    },
+    {
+      "name": "axi_gpio_0_GPIO",
+      "scope": "",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "axi_gpio_0/GPIO",
+          "kind": "intfPin"
+        },
+        {
+          "path": "gpio_rtl",
+          "kind": "intfPort"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 49
+      }
+    },
+    {
+      "name": "sys_clk_1",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "sys_clk",
+          "kind": "port"
+        },
+        {
+          "path": "clk_wiz_0/clk_in1",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 50
+      }
+    },
+    {
+      "name": "reset_n_1",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "reset_n",
+          "kind": "port"
+        },
+        {
+          "path": "clk_wiz_0/resetn",
+          "kind": "pin"
+        },
+        {
+          "path": "proc_sys_reset_0/ext_reset_in",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 51
+      }
+    },
+    {
+      "name": "clk_wiz_0_clk_out1",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "clk_wiz_0/clk_out1",
+          "kind": "pin"
+        },
+        {
+          "path": "microblaze_0/Clk",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/ACLK",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/S00_ACLK",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/M00_ACLK",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/M01_ACLK",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_gpio_0/s_axi_aclk",
+          "kind": "pin"
+        },
+        {
+          "path": "proc_sys_reset_0/slowest_sync_clk",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/clk",
+          "kind": "pin"
+        },
+        {
+          "path": "pwm_gen_0/clk",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 52
+      }
+    },
+    {
+      "name": "clk_wiz_0_locked",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "clk_wiz_0/locked",
+          "kind": "pin"
+        },
+        {
+          "path": "proc_sys_reset_0/dcm_locked",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 53
+      }
+    },
+    {
+      "name": "proc_sys_reset_0_mb_reset",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "proc_sys_reset_0/mb_reset",
+          "kind": "pin"
+        },
+        {
+          "path": "microblaze_0/Reset",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 54
+      }
+    },
+    {
+      "name": "proc_sys_reset_0_interconnect_aresetn",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "proc_sys_reset_0/interconnect_aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/ARESETN",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 55
+      }
+    },
+    {
+      "name": "proc_sys_reset_0_peripheral_aresetn",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "proc_sys_reset_0/peripheral_aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/S00_ARESETN",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/M00_ARESETN",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_interconnect_0/M01_ARESETN",
+          "kind": "pin"
+        },
+        {
+          "path": "axi_gpio_0/s_axi_aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "pwm_gen_0/rst_n",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 56
+      }
+    },
+    {
+      "name": "axi_gpio_0_gpio2_io_o",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "axi_gpio_0/gpio2_io_o",
+          "kind": "pin"
+        },
+        {
+          "path": "pwm_gen_0/duty",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 57
+      }
+    },
+    {
+      "name": "pwm_gen_0_pwm",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "pwm_gen_0/pwm",
+          "kind": "pin"
+        },
+        {
+          "path": "pwm_out",
+          "kind": "port"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 58
+      }
+    },
+    {
+      "name": "uart_rx_1",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "uart_rx",
+          "kind": "port"
+        },
+        {
+          "path": "io_subsystem/rx",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 59
+      }
+    },
+    {
+      "name": "io_subsystem_tx",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/tx",
+          "kind": "pin"
+        },
+        {
+          "path": "uart_tx",
+          "kind": "port"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 60
+      }
+    },
+    {
+      "name": "io_subsystem_leds",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/leds",
+          "kind": "pin"
+        },
+        {
+          "path": "leds",
+          "kind": "port"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 61
+      }
+    },
+    {
+      "name": "io_subsystem_interrupt",
+      "scope": "",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/interrupt",
+          "kind": "pin"
+        },
+        {
+          "path": "microblaze_0/Interrupt",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 62
+      }
+    },
+    {
+      "name": "S_AXI_1",
+      "scope": "io_subsystem",
+      "kind": "interface",
+      "endpoints": [
+        {
+          "path": "io_subsystem/S_AXI",
+          "kind": "intfPin"
+        },
+        {
+          "path": "io_subsystem/axi_uart_0/S_AXI",
+          "kind": "intfPin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 63
+      }
+    },
+    {
+      "name": "clk_1",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/clk",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/axi_uart_0/s_axi_aclk",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/axi_timer_0/s_axi_aclk",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/led_ctrl_0/clk",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 64
+      }
+    },
+    {
+      "name": "aresetn_1",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/axi_uart_0/s_axi_aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/axi_timer_0/s_axi_aresetn",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/led_ctrl_0/rst_n",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 65
+      }
+    },
+    {
+      "name": "rx_1",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/rx",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/axi_uart_0/rx",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 66
+      }
+    },
+    {
+      "name": "axi_uart_0_tx",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/axi_uart_0/tx",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/tx",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 67
+      }
+    },
+    {
+      "name": "axi_uart_0_interrupt",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/axi_uart_0/interrupt",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/interrupt",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 68
+      }
+    },
+    {
+      "name": "axi_timer_0_generateout0",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/axi_timer_0/generateout0",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/led_ctrl_0/tick",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 69
+      }
+    },
+    {
+      "name": "led_ctrl_0_leds",
+      "scope": "io_subsystem",
+      "kind": "signal",
+      "endpoints": [
+        {
+          "path": "io_subsystem/led_ctrl_0/leds",
+          "kind": "pin"
+        },
+        {
+          "path": "io_subsystem/leds",
+          "kind": "pin"
+        }
+      ],
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 70
+      }
+    }
+  ],
+  "addressAssignments": [
+    {
+      "masterSpace": "microblaze_0/Data",
+      "slaveSegment": "axi_gpio_0/S_AXI/Reg",
+      "offset": "0x40000000",
+      "range": "64K",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 71
+      }
+    },
+    {
+      "masterSpace": "microblaze_0/Data",
+      "slaveSegment": "io_subsystem/axi_uart_0/S_AXI/Reg",
+      "offset": "0x40600000",
+      "range": "64K",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 72
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "warning",
+      "message": "Pin direction for axi_gpio_0/gpio2_io_o was inferred from its connections",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 42
+      }
+    },
+    {
+      "severity": "warning",
+      "message": "Unrecognized command \"set_property -dict\" argument ignored",
+      "loc": {
+        "file": "sample_bd.tcl",
+        "line": 88
+      }
+    },
+    {
+      "severity": "info",
+      "message": "Design contains 1 hierarchical cell"
+    }
+  ]
+}
